@@ -1,0 +1,20 @@
+version: "3"
+services:
+  api:
+    build:
+      context: ./service/api/v1/
+      dockerfile: build/Dockerfile
+    ports:
+      - "5001:5001"
+
+  postgresql:
+    build:
+      context: ./db-migrations
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "--dbname=librarian", "--username=postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
